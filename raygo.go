@@ -1,9 +1,20 @@
 package main
 
 import (
-       "fmt"
+	"os"
+	"fmt"
+//	"encoding/json"
 )
 
-func main {
-     fmt.Println("hello world")
+func usage() {
+	fmt.Println("raygo [JSON_SCENE]...")
+}
+
+func main() {
+	if len(os.Args) > 1 {
+		fmt.Println("Hello World")
+	} else {
+		usage()
+		os.Exit(0)
+	}
 }
