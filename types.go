@@ -1,4 +1,4 @@
-package types
+package main
 
 type MeshType int
 type LightType int
