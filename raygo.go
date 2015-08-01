@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"flag"
+	"image"
+	"image/png"
 )
 
 func usage() {
@@ -12,6 +14,7 @@ func usage() {
 
 func main() {
 	var scene Scene
+	var path string = "out.png"
 
 	if len(os.Args) > 1 {
 		var sceneFile string
@@ -21,6 +24,10 @@ func main() {
 		flag.StringVar(&imgOut, "o", "out.png", "image output")
 		
 		flag.Parse()
+
+		if flag.Parsed() {
+			path = imgOut
+		}
 	} else {
 		scene.Width = 1080
 		scene.Height = 720
@@ -30,6 +37,21 @@ func main() {
 		
 		scene.Meshs = append(scene.Meshs, Mesh{})
 	}
-	Raytracer(&scene)
-	fmt.Println(scene)
+
+	imgRect := image.Rect(0, 0, 100, 100)
+	img := image.NewRGBA(imgRect)
+
+	Raytracer(&scene, img)
+
+	// create en populate file
+	outfd, err := os.Create(path)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	err = png.Encode(outfd, img)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
