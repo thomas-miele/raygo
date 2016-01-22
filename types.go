@@ -1,52 +1,72 @@
 package main
 
-type MeshType int
-type LightType int
+import (
+	"image/color"
+)
+
+type meshType int
+type lightType int
 
 const (
-	Plane MeshType = iota
-	Sphere
-	Cylinder
-	Cone
+	plane meshType = iota
+	sphere
+	cylinder
+	cone
 )
 
 const (
-	Spot LightType = iota
+	spot lightType = iota
 )
 
-type Vector3i struct {
-	X, Y, Z int
+type vector struct {
+	x, y, z float32
 }
 
-type Position Vector3i
-type Rotation Vector3i
+type rotation vector
+type position vector
 
-type Color struct {
-	R, G, B int8
-	Bright  float32
+type pixel struct {
+	color  color.RGBA
+	bright float32
 }
 
-type Camera struct {
-	Pos Position
-	Rot Rotation
+type camera struct {
+	pos position
+	rot rotation
 }
 
 type Scene struct {
-	Width, Height int
-	D             int
-	Cam           Camera
-	Meshs         []Mesh
-	Lights        []Light
+	width  int
+	height int
+	d      int
+	cam    camera
+	meshs  []mesh
+	lights []light
 }
 
-type Mesh struct {
-	Pos   Position
-	Rot   Rotation
-	Color Color
+type mesh struct {
+	pos   position
+	rot   rotation
+	color pixel
 	R     float32
 }
 
-type Light struct {
-	Pos   Position
-	Color Color
+type light struct {
+	pos   position
+	color pixel
+}
+
+type Ray struct {
+	is         bool
+	vx, vy, vz float32
+	k          float32
+	color      pixel
+	topMesh    *mesh
+	topSpot    *light
+}
+
+type calcRes struct {
+	a, b, c float32
+	delta   float32
+	k1, k2  float32
 }

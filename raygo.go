@@ -29,22 +29,23 @@ func main() {
 			path = imgOut
 		}
 	} else {
-		scene.Width = 1080
-		scene.Height = 720
-		scene.D = 100
-		scene.Cam.Pos.X = -300
-		scene.Cam.Pos.Z = 50
+		scene.width = WinX
+		scene.height = WinY
+		scene.d = D
+		scene.cam.pos.x = -300
+		scene.cam.pos.y = 50
 		
-		scene.Meshs = append(scene.Meshs, Mesh{})
+		scene.meshs = append(scene.meshs, mesh{})
 	}
 
-	imgRect := image.Rect(0, 0, 100, 100)
+	imgRect := image.Rect(0, 0, scene.width, scene.height)
 	img := image.NewRGBA(imgRect)
 
 	Raytracer(&scene, img)
 
 	// create en populate file
 	outfd, err := os.Create(path)
+	defer outfd.Close()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
