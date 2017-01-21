@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 )
@@ -37,6 +38,7 @@ func init_calc(x, y int) color.RGBA {
 	y1 = float32((WinX / 2) - x)
 	z1 = float32((WinY / 2) - y)
 
+	fmt.Println(x1, y1, z1)
 	/*
 	ray.Vx = x1 - eye->pos.X;
 	ray.Vy = y1 - eye->pos.Y;

@@ -1,15 +1,14 @@
-##
-## Makefile for  in /home/miele_t/
-## 
-## Made by thomas miele
-## Login   <miele_t@epitech.net>
-## 
-## Started on  Thu Mar 15 08:59:42 2012 thomas miele
-## Last update Sat Jun  2 16:21:34 2012 thomas miele
-##
+#
+# Raygo
+#
+
+all: build
 
 build:
-	go build .
+	docker run --rm -v ${PWD}:/usr/src/raygo -w /usr/src/raygo golang:latest go build -v
 
 clean:
-	go clean
+	rm raygo
+
+perms:
+	sudo chown ${USER}:${USER} ./raygo
