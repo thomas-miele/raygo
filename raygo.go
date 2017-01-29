@@ -1,11 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"flag"
+	"fmt"
 	"image"
 	"image/png"
+	"os"
+
+	"github.com/thomas-miele/raygo/raytracer"
 )
 
 func usage() {
@@ -13,35 +15,37 @@ func usage() {
 }
 
 func main() {
-	var scene Scene
+	var scene raytracer.Scene
 	var path string = "out.png"
 
+	// si arguments -> utiliser une scene json
 	if len(os.Args) > 1 {
 		var sceneFile string
 		flag.StringVar(&sceneFile, "i", "scene.json", "json scene file")
 
 		var imgOut string
 		flag.StringVar(&imgOut, "o", "out.png", "image output")
-		
+
 		flag.Parse()
 
 		if flag.Parsed() {
 			path = imgOut
 		}
 	} else {
-		scene.width = WinX
-		scene.height = WinY
-		scene.d = D
+		// scene par defaut
+		scene.width = raytracer.WinX
+		scene.height = raytracer.WinY
+		scene.d = raytracer.D
 		scene.cam.pos.x = -300
 		scene.cam.pos.y = 50
-		
+
 		scene.meshs = append(scene.meshs, mesh{})
 	}
 
 	imgRect := image.Rect(0, 0, scene.width, scene.height)
 	img := image.NewRGBA(imgRect)
 
-	Raytracer(&scene, img)
+	raytracer.Raytracer(&scene, img)
 
 	// create en populate file
 	outfd, err := os.Create(path)
