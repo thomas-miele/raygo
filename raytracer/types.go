@@ -4,69 +4,66 @@ import (
 	"image/color"
 )
 
-type meshType int
-type lightType int
+type MeshType int
+type LightType int
 
 const (
-	plane meshType = iota
-	sphere
-	cylinder
-	cone
+	Plane MeshType = iota
+	Sphere
+	Cylinder
+	Cone
 )
 
 const (
-	spot lightType = iota
+	Spot LightType = iota
 )
 
-type vector struct {
-	x, y, z float32
+type Vector struct {
+	X, Y, Z float32
 }
 
-type rotation vector
-type position vector
-
-type pixel struct {
-	color  color.RGBA
-	bright float32
+type Pixel struct {
+	Color  color.RGBA
+	Bright float32
 }
 
-type camera struct {
-	pos position
-	rot rotation
+type Camera struct {
+	Pos Vector
+	Rot Vector
 }
 
 type Scene struct {
-	width  int
-	height int
-	d      int
-	cam    camera
-	meshs  []mesh
-	lights []light
+	Width  int
+	Height int
+	D      int
+	Cam    Camera
+	Meshs  []Mesh
+	Lights []Light
 }
 
-type mesh struct {
-	pos   position
-	rot   rotation
-	color pixel
+type Mesh struct {
+	Pos   Vector
+	Rot   Vector
+	Color Pixel
 	R     float32
 }
 
-type light struct {
-	pos   position
-	color pixel
+type Light struct {
+	Pos   Vector
+	Color Pixel
 }
 
 type Ray struct {
-	is         bool
-	vx, vy, vz float32
-	k          float32
-	color      pixel
-	topMesh    *mesh
-	topSpot    *light
+	Is         bool
+	Vx, Vy, Vz float32
+	K          float32
+	Color      Pixel
+	TopMesh    *Mesh
+	TopSpot    *Light
 }
 
-type calcRes struct {
-	a, b, c float32
-	delta   float32
-	k1, k2  float32
+type CalcRes struct {
+	A, B, C float32
+	Delta   float32
+	K1, K2  float32
 }

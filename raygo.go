@@ -1,53 +1,60 @@
 package main
 
 import (
-	"flag"
+	"os"
 	"fmt"
 	"image"
 	"image/png"
-	"os"
+
+	"net/http"
+	"github.com/labstack/echo"
 
 	"github.com/thomas-miele/raygo/raytracer"
 )
 
-func usage() {
-	fmt.Println("raygo [JSON_SCENE] [-o OUTFILE]")
+func main() {
+	esrv := echo.New()
+
+	esrv.Static("/", "www")
+
+	esrv.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello World !")
+	})
+
+	esrv.GET("/ray", func(c echo.Context) error {
+		raygo()
+		return c.HTML(http.StatusOK, "<img src=\"out.png\">")
+		//return c.HTML(http.StatusOK, "<img src=\"dummy.png\">")
+
+	})
+
+	esrv.Logger.Fatal(esrv.Start(":8000"))
 }
 
-func main() {
+func raygo() {
 	var scene raytracer.Scene
-	var path string = "out.png"
+	var path string = "www/out.png"
 
 	// si arguments -> utiliser une scene json
-	if len(os.Args) > 1 {
-		var sceneFile string
-		flag.StringVar(&sceneFile, "i", "scene.json", "json scene file")
+	// scene par defaut
+	scene.Width = raytracer.WinX
+	scene.Height = raytracer.WinY
+	scene.D = raytracer.D
+	scene.Cam.Pos.X = -300
+	scene.Cam.Pos.Y = 50
 
-		var imgOut string
-		flag.StringVar(&imgOut, "o", "out.png", "image output")
+	scene.Meshs = append(scene.Meshs, raytracer.Mesh{})
 
-		flag.Parse()
-
-		if flag.Parsed() {
-			path = imgOut
-		}
-	} else {
-		// scene par defaut
-		scene.width = raytracer.WinX
-		scene.height = raytracer.WinY
-		scene.d = raytracer.D
-		scene.cam.pos.x = -300
-		scene.cam.pos.y = 50
-
-		scene.meshs = append(scene.meshs, mesh{})
-	}
-
-	imgRect := image.Rect(0, 0, scene.width, scene.height)
+	imgRect := image.Rect(0, 0, scene.Width, scene.Height)
 	img := image.NewRGBA(imgRect)
 
 	raytracer.Raytracer(&scene, img)
 
-	// create en populate file
+	// create and populate file
+	var err1 = os.Remove(path)
+	if err1 != nil {
+		fmt.Println(err1)
+	}
 	outfd, err := os.Create(path)
 	defer outfd.Close()
 	if err != nil {

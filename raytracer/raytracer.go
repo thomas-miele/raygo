@@ -1,7 +1,7 @@
 package raytracer
 
 import (
-	"math"
+	//"math"
 	"image"
 	"image/color"
 )
@@ -16,12 +16,17 @@ func Raytracer(scene *Scene, img *image.RGBA) {
 	b := img.Bounds()
 	for y := b.Min.Y; y < b.Max.Y; y++ {
 		for x := b.Min.X; x < b.Max.X; x++ {
-			c = initCalc(scene, x, y)
+			c.R = 63
+			c.G = 63
+			c.B = 255
+			c.A = 255
+			//c = initCalc(scene, x, y)
 			img.Set(x, y, c)
 		}
 	}
 }
 
+/*
 func initCalc(scene *Scene, x, y int) color.RGBA {
 	var ray Ray
 	var x1, y1, z1 float32
@@ -61,3 +66,4 @@ func calc(scene *Scene, ray *Ray, x, y int) color.RGBA {
 		}
 	}
 }
+*/
