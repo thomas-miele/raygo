@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image"
 	"image/png"
+	"bytes"
 
 	"net/http"
 	"github.com/labstack/echo"
@@ -20,20 +21,13 @@ func main() {
 	esrv.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello World !")
 	})
-
-	esrv.GET("/ray", func(c echo.Context) error {
-		raygo()
-		return c.HTML(http.StatusOK, "<img src=\"out.png\">")
-		//return c.HTML(http.StatusOK, "<img src=\"dummy.png\">")
-
-	})
+	esrv.GET("/ray", raygo)
 
 	esrv.Logger.Fatal(esrv.Start(":8000"))
 }
 
-func raygo() {
+func raygo(c echo.Context) error {
 	var scene raytracer.Scene
-	var path string = "www/out.png"
 
 	// si arguments -> utiliser une scene json
 	// scene par defaut
@@ -50,20 +44,12 @@ func raygo() {
 
 	raytracer.Raytracer(&scene, img)
 
-	// create and populate file
-	var err1 = os.Remove(path)
-	if err1 != nil {
-		fmt.Println(err1)
-	}
-	outfd, err := os.Create(path)
-	defer outfd.Close()
+	buffer := new(bytes.Buffer)
+	err := png.Encode(buffer, img)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	err = png.Encode(outfd, img)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+
+	return c.Stream(http.StatusOK, "image/png", buffer)
 }
