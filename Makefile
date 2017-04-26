@@ -2,13 +2,13 @@
 # Raygo
 #
 
-all: build
+NAME = raygo
+
+run:
+	./$(NAME)
 
 build:
-	docker run --rm -v ${PWD}:/usr/src/raygo -w /usr/src/raygo golang:latest go build -v
+	go build
 
 clean:
-	rm raygo
-
-perms:
-	sudo chown ${USER}:${USER} ./raygo
+	go clean

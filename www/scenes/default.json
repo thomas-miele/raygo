@@ -1,0 +1,40 @@
+{
+    "screen": {
+        "x": 640,
+        "y": 480
+    },
+    "camera": {
+        "position": [-100, 200, 100],
+        "rotation": [0, 0, 0]
+    },
+    "mesh": [
+        {
+            "type": "plane",
+            "position": [0, 0, 0],
+            "rotation": [0, 0, 0],
+            "color": {
+                "rgb": "0xff0000",
+                "bright": 0.1
+            }
+        },
+        {
+            "type": "cylinder",
+            "position": [0, 0, 0],
+            "rotation": [0, 0, 0],
+            "color": {
+                "rgb": "0xff0000",
+                "bright": 0.9
+            }
+        }
+    ],
+    "light": [
+        {
+            "type": "spot",
+            "pos": [-100, 200, 100],
+            "color": {
+                "rgb": "0xff0000",
+                "bright": 0.1
+            }
+        }
+    ]
+}

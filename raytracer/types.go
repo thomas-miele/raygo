@@ -18,10 +18,6 @@ const (
 	Spot LightType = iota
 )
 
-type Vector struct {
-	X, Y, Z float32
-}
-
 type Pixel struct {
 	Color  color.RGBA
 	Bright float32
@@ -54,12 +50,12 @@ type Light struct {
 }
 
 type Ray struct {
-	Is         bool
-	Vx, Vy, Vz float32
-	K          float32
-	Color      Pixel
-	TopMesh    *Mesh
-	TopSpot    *Light
+	Is      bool
+	V       Vector
+	K       float32
+	Color   Pixel
+	TopMesh *Mesh
+	TopSpot *Light
 }
 
 type CalcRes struct {
