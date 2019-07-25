@@ -27,9 +27,9 @@ func initCalc(scene *Scene, x, y int) color.RGBA {
 	var x1, y1, z1 float32
 	var pixel color.RGBA
 
-	pixel.R = 63
-	pixel.G = 63
-	pixel.B = 255
+	pixel.R = 255
+	pixel.G = 99
+	pixel.B = 71
 	pixel.A = 255
 
 	x1 = float32(D)

@@ -4,8 +4,10 @@
 
 NAME = raygo
 
-run:
-	./$(NAME)
+all: run
+
+run: build
+	./$(NAME) | display
 
 build:
 	go build
