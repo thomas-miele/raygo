@@ -26,7 +26,8 @@ func main() {
 	imgRect := image.Rect(0, 0, scene.Width, scene.Height)
 	img := image.NewRGBA(imgRect)
 
-	raytracer.Raytracer(&scene, img)
+	ray := raytracer.Raytracer{Image: img, Scene: &scene}
+	ray.Algo()
 
 	// encoding into png buffer
 	buffer := new(bytes.Buffer)
