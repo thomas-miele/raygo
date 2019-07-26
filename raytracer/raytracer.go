@@ -32,7 +32,7 @@ func (raytracer *Raytracer) Algo() {
 // Pixel return the color needed
 func (raytracer *Raytracer) Pixel(x int, y int) color.RGBA {
 	var ray Ray
-	var x1, y1, z1 float32
+	var x1, y1, z1 float64
 	var pixel color.RGBA
 
 	pixel.R = 255
@@ -40,9 +40,9 @@ func (raytracer *Raytracer) Pixel(x int, y int) color.RGBA {
 	pixel.B = 71
 	pixel.A = 255
 
-	x1 = float32(D)
-	y1 = float32((WinX / 2) - x)
-	z1 = float32((WinY / 2) - y)
+	x1 = float64(D)
+	y1 = float64((WinX / 2) - x)
+	z1 = float64((WinY / 2) - y)
 
 	ray.V.X = x1 - raytracer.Scene.Cam.Pos.X
 	ray.V.Y = y1 - raytracer.Scene.Cam.Pos.Y

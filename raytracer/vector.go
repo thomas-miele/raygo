@@ -2,40 +2,74 @@ package raytracer
 
 import "math"
 
-type Vector struct {
-	X, Y, Z float32
+// Point is 3D coordinates position
+type Point struct {
+	X, Y, Z float64
 }
 
-func times(v Vector, k float32) Vector {
-	return Vector{k * v.X, k * v.Y, k * v.Z}
+// Vector interface for 3D coordinates and 3D vector
+type Vector Point
+
+// RayLight is a ray of light
+type RayLight struct {
+	Position  Point
+	Direction Point
 }
 
-func minus(v1, v2 Vector) Vector {
-	return Vector{v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z}
+// Coordinates for toto foobar
+type Coordinates interface {
+	plus(right Point) Point
+	minus(right Point) Point
+	cross(right Point) Point
+	dot(right Point) float64
+	times(k float64) Point
+	mag() float64
+	norm() Point
 }
 
-func dot(v1, v2 Vector) float32 {
-	return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z
+// plus Addition de deux coordonnées 3D par axe
+func (left Point) plus(right Point) Point {
+	return Point{left.X + right.X, left.Y + right.Y, left.Z + right.Z}
 }
 
-func mag(v Vector) float32 {
-	formula := v.X * v.X + v.Y * v.Y + v.Z * v.Z
-	sqrt := math.Sqrt(float64(formula))
-	return float32(sqrt)
+// minus Soustraction de deux coordonnées 3D par axe
+func (left Point) minus(right Point) Point {
+	return Point{left.X - right.X, left.Y - right.Y, left.Z - right.Z}
 }
 
-func norm(v Vector) Vector {
-	var vmag = mag(v)
-	var div float32
+func (left Point) cross(right Point) Point {
+	x := (left.Y * right.Z) - (left.Z * right.Y)
+	y := (left.Z * right.X) - (left.X * right.Z)
+	z := (left.X * right.Y) - (left.Y * right.X)
+	return Point{x, y, z}
+}
 
-	if (vmag == 0.0) {
-		div = math.MaxFloat32
+// dot Addition des multiplications de 2 coordonnées 3D par axe
+func (left Point) dot(right Point) float64 {
+	return (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z)
+}
+
+// times Multiplication par k d'une coordonnée 3D par axe
+func (left Point) times(k float64) Point {
+	return Point{k * left.X, k * left.Y, k * left.Z}
+}
+
+// mag Racine carré de la somme des multiplications de 2 coordonées 3D par axe
+func (left Point) mag() float64 {
+	formula := (left.X * left.X) + (left.Y * left.Y) + (left.Z * left.Z)
+	sqrt := math.Sqrt(formula)
+	return sqrt
+}
+
+// norm Normaliser une coordonée 3D
+func (left Point) norm() Point {
+	var vmag = left.mag()
+	var div float64
+
+	if vmag == 0.0 {
+		div = math.MaxFloat64
 	} else {
 		div = 1 * vmag
 	}
-	return times(v, div)
-}
-
-func cross(v1, v2 Vector) Vector {
-	return Vector{v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X}
+	return left.times(div)
 }
